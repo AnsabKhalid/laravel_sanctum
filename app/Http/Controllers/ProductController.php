@@ -54,12 +54,12 @@ class ProductController extends Controller
     {
         $product = Product::find($id);
 
-    if ($product) {
-        $product->delete();
-        return response()->json(['message' => 'Resource deleted successfully'], 200);
-    } else {
-        return response()->json(['message' => 'Resource not found'], 404);
-    }
+        if ($product) {
+            $product->delete();
+            return response()->json(['message' => 'Resource deleted successfully'], 200);
+        } else {
+            return response()->json(['message' => 'Resource not found'], 404);
+        }
     }
 
     /**

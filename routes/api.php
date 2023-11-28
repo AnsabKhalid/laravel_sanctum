@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PasswordResetController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,6 +23,8 @@ use App\Http\Controllers\AuthController;
 // Route::resource('products', ProductController::class);
 Route::post("/register", [AuthController::class, 'register']);
 Route::post("/login", [AuthController::class, 'login']);
+Route::post("/send-reset-password-email", [PasswordResetController::class, 'send_reset_password_email']);
+Route::post("/reset-password/{token}", [PasswordResetController::class, 'reset']);
 Route::get("/products", [ProductController::class, 'index']);
 Route::get("/products/{id}", [ProductController::class, 'show']);
 Route::get("/products/search/{name}", [ProductController::class, 'search']);
@@ -30,6 +33,8 @@ Route::get("/products/search/{name}", [ProductController::class, 'search']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post("/logout", [AuthController::class, 'logout']);
+    Route::get("/user-info", [AuthController::class, 'logged_user']);
+    Route::post("/change-password", [AuthController::class, 'change_password']);
     Route::post("/products", [ProductController::class, 'store']);
     Route::put("/products/{id}", [ProductController::class, 'update']);
     Route::delete("/products/{id}", [ProductController::class, 'destroy']);

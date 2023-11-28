@@ -45,7 +45,7 @@ class AuthController extends Controller
         // Check Password
         if(!$user || !Hash::check($fields['password'], $user->password)) {
             return response([
-                'message' => "Invalid Password"
+                'message' => "Invalid Credentials"
             ], 401);
         }
 
@@ -65,5 +65,25 @@ class AuthController extends Controller
         return [
             'message' => "Logged out Successfully"
         ];
+    }
+
+    public function logged_user() {
+        $loggedUser = auth()->user();
+        return response([
+            'user' => $loggedUser,
+            'message' => "Logged user data"
+        ], 200);
+    }
+
+    public function change_password(Request $request) {
+        $password = $request->validate([
+            'password' => 'required|string|confirmed',
+        ]);
+        $user = auth()->user();
+        $user->password = Hash::make($password['password']);
+        $user->save();
+        return response([
+            'message' => "Password changed successfully"
+        ], 200);
     }
 }
